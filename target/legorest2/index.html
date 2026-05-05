@@ -3,6 +3,12 @@
   <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <title>Hello App Engine</title>
+    <style>
+    table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+</style>
   </head>
 
   <body>
@@ -19,6 +25,7 @@
           if (this.readyState == 4 && this.status == 200) {
            var settings=JSON.parse(this.responseText);
            document.getElementById("settings").innerHTML="ID="+settings.id+" Run="+settings.run+" Speed="+settings.speed+" Turn="+settings.turn;
+           document.getElementById("SetSpeed").innerHTML=settings.speed;
           }
         };
         
@@ -70,8 +77,19 @@
     <input type='button' name='start' value='START' onclick='startlego(this.form);'>
     <input type='button' name='reset' value='RESET' onclick='resetlego(this.form);'>
     </form>
-    <p id='settings'>
-    </p>
+    <table>
+      <tr>
+        <td>Speed</td>
+        <td id="SetSpeed"></td>
+      </tr>
+      <tr>
+        <td>Turn</td>
+        <td settings.turn></td>
+      </tr>
+    </table>
+    <!-- <p id='settings'>
+    </p> -->
+    
     <p id="setvalues">...end...</p>
   </body>
 </html>
