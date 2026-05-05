@@ -50,6 +50,11 @@
       lego.speed=lego.speed-10;
       sendData(form);
   }
+  function resetlego(form){
+    lego.speed = 0;
+    lego.turn = 0;
+    sendData(form);
+  }
   </script>
     <h1>Lego Settings!</h1>
     <h3>Lego</h3>
@@ -63,6 +68,7 @@
     <input type='button' name='right' value='Right' onclick='turnRight(this.form);'>
     <input type='button' name='stop' value='STOP' onclick='stoplego(this.form);'>
     <input type='button' name='start' value='START' onclick='startlego(this.form);'>
+    <input type='button' name='reset' value='RESET' onclick='resetlego(this.form);'>
     </form>
     <p id='settings'>
     </p>
