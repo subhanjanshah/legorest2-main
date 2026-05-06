@@ -3,12 +3,113 @@
   <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <title>Hello App Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
     <style>
-    table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-</style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #0a0c10;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 500px;
+      }
+
+      h1 {
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 42px;
+        color: white;
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      h1 span {
+        color: #00d4ff;
+      }
+
+      .panel {
+        background-color: #111520;
+        border: 1px solid #1e2840;
+        border-radius: 16px;
+        padding: 28px;
+      }
+
+      .control-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 16px 10px;
+        border-radius: 10px;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+
+      .btn-speed {
+        color: #00d4ff;
+        background-color: #0a0c10;
+        border: 1px solid #00d4ff;
+      }
+
+      .btn-dir {
+        color: #a78bfa;
+        background-color: #0a0c10;
+        border: 1px solid #a78bfa;
+      }
+
+      .btn-stop {
+        color: #ff3c6e;
+        background-color: #0a0c10;
+        border: 1px solid #ff3c6e;
+      }
+
+      .btn-start {
+        color: #00ff99;
+        background-color: #0a0c10;
+        border: 1px solid #00ff99;
+      }
+
+      .btn-reset {
+        color: #ffa500;
+        background-color: #0a0c10;
+        border: 1px solid #ffa500;
+      }
+
+      #settings {
+        color: #00d4ff;
+        font-family: Arial, sans-serif;
+        margin-top: 20px;
+        font-size: 15px;
+        padding-top: 16px;
+        border-top: 1px solid #1e2840;
+      }
+
+      #setvalues {
+        color: #4a5280;
+        font-family: Arial, sans-serif;
+        margin-top: 8px;
+        font-size: 13px;
+      }
+
+      #lego { display: none; }
+    </style>
   </head>
 
   <body>
@@ -25,10 +126,8 @@
           if (this.readyState == 4 && this.status == 200) {
            var settings=JSON.parse(this.responseText);
            document.getElementById("settings").innerHTML="ID="+settings.id+" Run="+settings.run+" Speed="+settings.speed+" Turn="+settings.turn;
-           document.getElementById("SetSpeed").innerHTML=settings.speed;
           }
         };
-        
         xhttp.open("POST","/rest/lego/setvalues",true);
         xhttp.setRequestHeader("Content-type","application/json");
         xhttp.send(json);
@@ -58,38 +157,37 @@
       sendData(form);
   }
   function resetlego(form){
-    lego.speed = 0;
-    lego.turn = 0;
-    sendData(form);
+      lego.speed=0;
+      lego.turn=0;
+      lego.run=1;
+      sendData(form);
   }
   </script>
-    <h1>Lego Settings!</h1>
-    <h3>Lego</h3>
-    <p id='lego'>
-    </p>
-    <h3>New values</h3>
-    <form id='legoform'>
-    <input type='button' name='slower' value='Slower' onclick='goSlower(this.form);'>
-    <input type='button' name='faster' value='faster' onclick='goFaster(this.form);'>
-    <input type='button' name='left' value='Left' onclick='turnLeft(this.form);'>
-    <input type='button' name='right' value='Right' onclick='turnRight(this.form);'>
-    <input type='button' name='stop' value='STOP' onclick='stoplego(this.form);'>
-    <input type='button' name='start' value='START' onclick='startlego(this.form);'>
-    <input type='button' name='reset' value='RESET' onclick='resetlego(this.form);'>
-    </form>
-    <table>
-      <tr>
-        <td>Speed</td>
-        <td id="SetSpeed"></td>
-      </tr>
-      <tr>
-        <td>Turn</td>
-        <td settings.turn></td>
-      </tr>
-    </table>
-    <!-- <p id='settings'>
-    </p> -->
-    
-    <p id="setvalues">...end...</p>
+
+    <div class="container">
+      <h1>EV3 <span>CTRL</span></h1>
+      <div class="panel">
+        <div class="control-row">
+          <button class="btn btn-speed" onclick="goSlower(this)">Slower</button>
+          <button class="btn btn-speed" onclick="goFaster(this)">Faster</button>
+        </div>
+        <div class="control-row">
+          <button class="btn btn-dir" onclick="turnLeft(this)">Left</button>
+          <button class="btn btn-dir" onclick="turnRight(this)">Right</button>
+        </div>
+        <div class="control-row">
+          <button class="btn btn-stop" onclick="stoplego(this)">Stop</button>
+          <button class="btn btn-start" onclick="startlego(this)">Start</button>
+        </div>
+        <div class="control-row">
+          <button class="btn btn-reset" onclick="resetlego(this)">Reset</button>
+        </div>
+      </div>
+
+      <p id='lego'></p>
+      <p id='settings'></p>
+      <p id="setvalues"></p>
+    </div>
+
   </body>
 </html>
