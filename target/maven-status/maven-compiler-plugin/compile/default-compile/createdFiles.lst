@@ -1,0 +1,4 @@
+app/ApplicationConfig.class
+data/Lego.class
+app/HelloAppEngine.class
+services/LegoService.class
