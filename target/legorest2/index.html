@@ -93,22 +93,22 @@
       }
 
       #settings {
-    color: #00d4ff;
-    font-family: Arial, sans-serif;
-    margin-top: 20px;
-    font-size: 15px;
-    padding-top: 16px;
-    border-top: 1px solid #1e2840;
-}
+        color: #00d4ff;
+        font-family: Arial, sans-serif;
+        margin-top: 20px;
+        font-size: 15px;
+        padding-top: 16px;
+        border-top: 1px solid #1e2840;
+      }
 
-#setvalues {
-    color: #4a5280;
-    font-family: Arial, sans-serif;
-    margin-top: 8px;
-    font-size: 13px;
-}
+      #setvalues {
+        color: #4a5280;
+        font-family: Arial, sans-serif;
+        margin-top: 8px;
+        font-size: 13px;
+      }
 
-#lego { display: none; }
+      #lego { display: none; }
     </style>
   </head>
 
@@ -168,19 +168,19 @@
       <h1>EV3 <span>CTRL</span></h1>
       <div class="panel">
         <div class="control-row">
-          <button class="btn btn-speed" onclick="goSlower(null)">Slower</button>
-          <button class="btn btn-speed" onclick="goFaster(null)">Faster</button>
+          <button class="btn btn-speed" onclick="goSlower(this)">Slower</button>
+          <button class="btn btn-speed" onclick="goFaster(this)">Faster</button>
         </div>
         <div class="control-row">
-          <button class="btn btn-dir" onclick="turnLeft(null)">Left</button>
-          <button class="btn btn-dir" onclick="turnRight(null)">Right</button>
+          <button class="btn btn-dir" onclick="turnLeft(this)">Left</button>
+          <button class="btn btn-dir" onclick="turnRight(this)">Right</button>
         </div>
         <div class="control-row">
-          <button class="btn btn-stop" onclick="stoplego(null)">Stop</button>
-          <button class="btn btn-start" onclick="startlego(null)">Start</button>
+          <button class="btn btn-stop" onclick="stoplego(this)">Stop</button>
+          <button class="btn btn-start" onclick="startlego(this)">Start</button>
         </div>
         <div class="control-row">
-          <button class="btn btn-reset" onclick="resetlego(null)">Reset</button>
+          <button class="btn btn-reset" onclick="resetlego(this)">Reset</button>
         </div>
       </div>
 
