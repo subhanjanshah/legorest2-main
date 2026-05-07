@@ -1,4 +1,5 @@
 package data;
+
 import java.sql.Timestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,16 +8,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="lego")
+@Table(name = "lego")
 public class Lego {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int run;
     private int speed;
     private int turn;
     private Timestamp aika = new Timestamp(System.currentTimeMillis());
+
+    private int obstacles;
+
+    public int getObstacles() {
+        return obstacles;
+    }
+
+    public void setObstacles(int obstacles) {
+        this.obstacles = obstacles;
+    }
 
     public int getId() {
         return id;

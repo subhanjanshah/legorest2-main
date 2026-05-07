@@ -1,0 +1,4 @@
+data\Lego.class
+app\HelloAppEngine.class
+app\ApplicationConfig.class
+services\LegoService.class

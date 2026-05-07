@@ -92,20 +92,98 @@
         border: 1px solid #ffa500;
       }
 
-      #settings {
-        color: #00d4ff;
-        font-family: Arial, sans-serif;
-        margin-top: 20px;
-        font-size: 15px;
-        padding-top: 16px;
-        border-top: 1px solid #1e2840;
+      .btn-set {
+        color: #00ff99;
+        background-color: #0a0c10;
+        border: 1px solid #00ff99;
       }
 
-      #setvalues {
+      .input-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+        align-items: center;
+      }
+
+      .input-label {
         color: #4a5280;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 12px;
+        width: 60px;
+        text-transform: uppercase;
+      }
+
+      .input-field {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        background-color: #0a0c10;
+        border: 1px solid #1e2840;
+        color: white;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 13px;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: #00d4ff;
+      }
+
+      .section-title {
+        color: #4a5280;
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        margin-top: 16px;
+      }
+
+      #settings { display: none; }
+      #setvalues { display: none; }
+
+      #obstaclecount {
+        color: #ffa500;
         font-family: Arial, sans-serif;
         margin-top: 8px;
-        font-size: 13px;
+        font-size: 15px;
+      }
+      /* Status cards */
+      .status-row {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .status-card {
+        flex: 1;
+        background-color: #0a0c10;
+        border: 1px solid #1e2840;
+        border-radius: 12px;
+        padding: 14px 10px;
+        text-align: center;
+      }
+
+      .status-label {
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 11px;
+        color: #4a5280;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+      }
+
+      .status-value {
+        font-family: 'Orbitron', Arial, sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #00d4ff;
+      }
+
+      .status-value.on {
+        color: #00ff99;
+      }
+
+      .status-value.off {
+        color: #ff3c6e;
       }
 
       #lego { display: none; }
@@ -114,79 +192,212 @@
 
   <body>
   <script>
-  var lego=new Object();
-  lego.run=1;
-  lego.speed=0;
-  lego.turn=0;
-  function sendData(form){
-        var json=JSON.stringify(lego);
-        var xhttp = new XMLHttpRequest();
-        document.getElementById("setvalues").innerHTML=json;
-        xhttp.onreadystatechange = function() {
+  var lego = new Object();
+  lego.run = 1;
+  lego.speed = 0;
+  lego.turn = 0;
+
+  function sendData(form) {
+      var json = JSON.stringify(lego);
+      var xhttp = new XMLHttpRequest();
+      document.getElementById("setvalues").innerHTML = json;
+      xhttp.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-           var settings=JSON.parse(this.responseText);
-           document.getElementById("settings").innerHTML="ID="+settings.id+" Run="+settings.run+" Speed="+settings.speed+" Turn="+settings.turn;
+              var settings = JSON.parse(this.responseText);
+              document.getElementById("settings").innerHTML = "ID=" + settings.id + " Run=" + settings.run + " Speed=" + settings.speed + " Turn=" + settings.turn;
+
+              // Update status cards
+              document.getElementById("cardSpeed").innerHTML = settings.speed;
+              document.getElementById("cardTurn").innerHTML = settings.turn;
+              var runCard = document.getElementById("cardRun");
+              if (settings.run == 1) {
+                  runCard.innerHTML = "ON";
+                  runCard.className = "status-value on";
+              } else {
+                  runCard.innerHTML = "OFF";
+                  runCard.className = "status-value off";
+              }
           }
-        };
-        xhttp.open("POST","/rest/lego/setvalues",true);
-        xhttp.setRequestHeader("Content-type","application/json");
-        xhttp.send(json);
-    }
-  function turnLeft(form){
-      lego.turn=lego.turn-10;
+      };
+      xhttp.open("POST", "/legorest2/rest/lego/setvalues", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send(json);
+  }
+
+  function turnLeft(form) {
+      lego.turn = lego.turn - 10;
       sendData(form);
   }
-  function turnRight(form){
-      lego.turn=lego.turn+10;
+
+  function turnRight(form) {
+      lego.turn = lego.turn + 10;
       sendData(form);
   }
-  function stoplego(form){
-      lego.run=0;
+
+  function stoplego(form) {
+      lego.run = 0;
       sendData(form);
   }
-  function startlego(form){
-      lego.run=1;
+
+  function startlego(form) {
+      lego.run = 1;
       sendData(form);
   }
-  function goFaster(form){
-      lego.speed=lego.speed+10;
+
+  function goFaster(form) {
+      lego.speed = lego.speed + 10;
       sendData(form);
   }
-  function goSlower(form){
-      lego.speed=lego.speed-10;
+
+  function goSlower(form) {
+      lego.speed = lego.speed - 10;
       sendData(form);
   }
-  function resetlego(form){
-      lego.speed=0;
-      lego.turn=0;
-      lego.run=1;
-      sendData(form);
+
+  function resetlego(form) {
+      lego.speed = 0;
+      lego.turn = 0;
+     // lego.run = 0;
+      document.getElementById("speedInput").value = "";
+      document.getElementById("turnInput").value = "";
+      sendData(null);
   }
+
+  // Set speed and turn from input fields
+  function setManualValues() {
+      var speedInput = document.getElementById("speedInput").value;
+      var turnInput = document.getElementById("turnInput").value;
+
+      // Validate speed must be between 0 and 100
+      if (speedInput !== "" && !isNaN(speedInput)) {
+          var speed = parseInt(speedInput);
+          if (speed < -100 || speed > 100) {
+              alert("Speed must be between -100 and 100!");
+              document.getElementById("speedInput").value = "";
+              return;
+          }
+          lego.speed = speed;
+      }
+
+      // Validate turn must be between -360 and 360
+      if (turnInput !== "" && !isNaN(turnInput)) {
+          var turn = parseInt(turnInput);
+          if (turn < -360 || turn > 360) {
+              alert("Turn must be between -360 and 360!");
+              document.getElementById("turnInput").value = "";
+              return;
+          }
+          lego.turn = turn;
+      }
+
+      sendData(null);
+  }
+
+  function getObstacleCount() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("cardObstacle").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", "/legorest2/rest/lego/obstaclecount", true);
+    xhttp.send();
+  }
+    setInterval(getObstacleCount, 2000);
+
+  // Keyboard controls
+  document.addEventListener('keydown', function(event) {
+      switch(event.key) {
+          case 'w': case 'W': case 'ArrowUp':
+              goFaster(null);
+              break;
+          case 's': case 'S': case 'ArrowDown':
+              goSlower(null);
+              break;
+          case 'a': case 'A': case 'ArrowLeft':
+              turnLeft(null);
+              break;
+          case 'd': case 'D': case 'ArrowRight':
+              turnRight(null);
+              break;
+          case ' ':
+              stoplego(null);
+              break;
+          case 'Backspace':
+              resetlego(null);
+              break;
+          case 'Enter':
+              startlego(null);
+              break;
+      }
+  });
   </script>
 
     <div class="container">
       <h1>EV3 <span>CTRL</span></h1>
       <div class="panel">
+
+        <!-- Status cards -->
+        <div class="status-row">
+          <div class="status-card">
+            <div class="status-label">Run</div>
+            <div class="status-value on" id="cardRun">ON</div>
+          </div>
+          <div class="status-card">
+            <div class="status-label">Speed</div>
+            <div class="status-value" id="cardSpeed">0</div>
+          </div>
+          <div class="status-card">
+            <div class="status-label">Turn</div>
+            <div class="status-value" id="cardTurn">0</div>
+          </div>
+          <div class="status-card">
+            <div class="status-label">Obstacles</div>
+            <div class="status-value" id="cardObstacle">0</div>
+          </div>
+
+        </div>
+
+        <p class="section-title">Speed</p>
         <div class="control-row">
-          <button class="btn btn-speed" onclick="goSlower(this)">Slower</button>
-          <button class="btn btn-speed" onclick="goFaster(this)">Faster</button>
+          <button class="btn btn-speed" onclick="goSlower(null)">Slower</button>
+          <button class="btn btn-speed" onclick="goFaster(null)">Faster</button>
+        </div>
+
+        <p class="section-title">Direction</p>
+        <div class="control-row">
+          <button class="btn btn-dir" onclick="turnLeft(null)">Left</button>
+          <button class="btn btn-dir" onclick="turnRight(null)">Right</button>
+        </div>
+
+        <p class="section-title">Control</p>
+        <div class="control-row">
+          <button class="btn btn-stop" onclick="stoplego(null)">Stop</button>
+          <button class="btn btn-start" onclick="startlego(null)">Start</button>
         </div>
         <div class="control-row">
-          <button class="btn btn-dir" onclick="turnLeft(this)">Left</button>
-          <button class="btn btn-dir" onclick="turnRight(this)">Right</button>
+          <button class="btn btn-reset" onclick="resetlego(null)">Reset</button>
+        </div>
+
+        <p class="section-title">Manual Input</p>
+        <div class="input-row">
+          <span class="input-label">Speed</span>
+          <input type="number" id="speedInput" class="input-field" placeholder="Max Speed 100." />
+        </div>
+        <div class="input-row">
+          <span class="input-label">Turn</span>
+          <input type="number" id="turnInput" class="input-field" placeholder="Max Turn 360." />
         </div>
         <div class="control-row">
-          <button class="btn btn-stop" onclick="stoplego(this)">Stop</button>
-          <button class="btn btn-start" onclick="startlego(this)">Start</button>
+          <button class="btn btn-set" onclick="setManualValues()">Set Values</button>
         </div>
-        <div class="control-row">
-          <button class="btn btn-reset" onclick="resetlego(this)">Reset</button>
-        </div>
+
       </div>
 
       <p id='lego'></p>
       <p id='settings'></p>
       <p id="setvalues"></p>
+      <!--  <p id="obstaclecount">Obstacles detected: 0</p> -->
     </div>
 
   </body>
